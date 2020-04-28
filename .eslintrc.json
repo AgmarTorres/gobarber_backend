@@ -18,7 +18,9 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "no-unused-vars": ["error", { "args": "none" }],
     "prettier/prettier": "error",
+    "class-methods-use-this": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
