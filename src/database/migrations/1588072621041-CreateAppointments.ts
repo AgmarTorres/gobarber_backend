@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export default class CreateAppointments1588072621041
@@ -12,9 +13,10 @@ export default class CreateAppointments1588072621041
             type: 'varchar',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
-            name: 'privider',
+            name: 'provider',
             type: 'varchar',
             isNullable: false,
           },
