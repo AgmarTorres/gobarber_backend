@@ -20,6 +20,7 @@
   "rules": {
     "no-unused-vars": ["error", { "args": "none" }],
     "prettier/prettier": "error",
+    "@typescript-eslint/camelcase": "off",
     "class-methods-use-this": "off",
     "import/extensions": [
       "error",

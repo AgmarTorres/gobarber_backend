@@ -1,5 +1,7 @@
 import {
+  // eslint-disable-next-line no-unused-vars
   MigrationInterface,
+  // eslint-disable-next-line no-unused-vars
   QueryRunner,
   TableColumn,
   TableForeignKey,
