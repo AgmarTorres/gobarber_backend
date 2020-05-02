@@ -30,7 +30,7 @@ class CreateUser {
       password: hash_password,
     });
 
-    userRepository.save(user);
+    await userRepository.save(user);
     return user;
   }
 }
