@@ -18,10 +18,12 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "no-unused-vars": ["error", { "args": "none" }],
+    "no0underscore-dangle": "off",
     "prettier/prettier": "error",
-    "@typescript-eslint/camelcase": "off",
     "class-methods-use-this": "off",
+    "no-unused-vars": ["error", { "args": "none" }],
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-unused-vars":  [ "error", { "argsIgnorePattern": "_"}],
     "import/extensions": [
       "error",
       "ignorePackages",
