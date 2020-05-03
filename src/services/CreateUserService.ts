@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
 
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface Request {
   name: string;
@@ -19,9 +20,10 @@ class CreateUser {
     });
 
     if (checkEmail) {
-      throw new Error('Email address already used');
+      throw new AppError('Email address already used', 400);
     }
 
+    // eslint-disable-next-line camelcase
     const hash_password = await hash(password, 8);
 
     const user = userRepository.create({

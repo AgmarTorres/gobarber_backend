@@ -4,6 +4,8 @@ import { getCustomRepository } from 'typeorm';
 // eslint-disable-next-line no-unused-vars
 import Appointment from '../models/Appointments';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import AppError from '../errors/AppError';
+
 /**
  * Recebimento das informações
  * Tratativas de erros e exceções
@@ -27,7 +29,7 @@ class CreateAppointmentService {
     );
 
     if (findAppointmentInSameDate) {
-      throw Error('This appointment is already booked');
+      throw new AppError('This appointment is already booked', 400);
     }
     const appointment = appointmentsRepository.create({
       provider_id,
