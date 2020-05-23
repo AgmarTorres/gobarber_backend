@@ -12,7 +12,7 @@ const upload = multer(uploadConfig);
 
 // Rota: Receber, chamar outro arquivo, devolver uma resposta
 
-userRouter.post('/', ensureAuthenticated, async (request, response) => {
+userRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body;
 
   const createUser = new CreateUserService();
