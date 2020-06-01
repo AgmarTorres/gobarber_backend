@@ -4,7 +4,7 @@ import { getCustomRepository } from 'typeorm';
 // eslint-disable-next-line no-unused-vars
 import AppError from '@shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointments';
-import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import AppointmentsRepository from '../typeorm/repositories/AppointmentsRepository';
 
 /**
  * Recebimento das informações
@@ -19,7 +19,6 @@ interface Request {
 }
 
 class CreateAppointmentService {
-  // eslint-disable-next-line camelcase
   public async execute({ date, provider_id }: Request): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentsRepository);
     const appointmentDate = startOfHour(date);
@@ -36,7 +35,7 @@ class CreateAppointmentService {
       date: appointmentDate,
     });
 
-    await appointmentsRepository.save(appointment);
+
     return appointment;
   }
 }

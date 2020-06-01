@@ -1,22 +1,23 @@
-import { getRepository } from 'typeorm';
 import path from 'path';
 import fs from 'fs';
 import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
 import User from '../infra/typeorm/entities/User';
+import IUserRepository from '../repositories/IUserRepository'
 
-interface Request {
+interface IRequest {
   // eslint-disable-next-line camelcase
   user_id: string;
   avatarFilename: string;
 }
 
 class UpdateUserAvatartService {
-  // eslint-disable-next-line camelcase
-  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
-    const userRepository = getRepository(User);
+
+  constructor( private userRepository: IUserRepository){  }
+
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
     // Verificar se o usuário é valido
-    const user = await userRepository.findOne(user_id);
+    const user = await this.userRepository.findById(user_id);
 
     if (!user) {
       throw new AppError(' Only authenticated users cans change avatar', 401);
@@ -34,7 +35,7 @@ class UpdateUserAvatartService {
       // userRepository.update;
     }
     user.avatar = avatarFilename;
-    await userRepository.save(user);
+    await this.userRepository.save(user);
     return user;
   }
 }
