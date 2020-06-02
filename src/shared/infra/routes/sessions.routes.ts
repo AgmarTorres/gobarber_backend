@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UserRepository'
-import User from '@modules/users/infra/typeorm/entities/User';
 
 const sessionRouter = Router();
 

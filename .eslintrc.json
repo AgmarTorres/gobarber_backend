@@ -18,7 +18,8 @@
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "no0underscore-dangle": "off",
+    "no-underscore-dangle": "off",
+    "no-useless-constructor": "off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "no-unused-vars": "off",
