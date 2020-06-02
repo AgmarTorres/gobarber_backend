@@ -4,6 +4,7 @@ import AppError from '@shared/errors/AppError';
 import uploadConfig from '@config/upload';
 import User from '../infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRepository'
+import { inject, injectable } from 'tsyringe'
 
 interface IRequest {
   // eslint-disable-next-line camelcase
@@ -11,9 +12,12 @@ interface IRequest {
   avatarFilename: string;
 }
 
+@injectable()
 class UpdateUserAvatartService {
 
-  constructor( private userRepository: IUserRepository){  }
+  constructor(
+    @inject('UsersRepository')
+    private userRepository: IUserRepository){  }
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
     // Verificar se o usuário é valido
