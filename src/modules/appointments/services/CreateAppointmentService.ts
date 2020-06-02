@@ -1,14 +1,16 @@
 import { startOfHour } from 'date-fns';
 
-// eslint-disable-next-line no-unused-vars
+import {injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointments';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository'
+
 /**
- * Recebimento das informações
- * Tratativas de erros e exceções
- * Acesso a repositórios
- */
+  * Recebimento das informações
+  * Tratativas de erros e exceções
+  * Acesso a repositórios
+*/
 
  //SOLID
 
@@ -23,9 +25,12 @@ interface IRequest {
   provider_id: string;
   date: Date;
 }
-
+@injectable()
 class CreateAppointmentService {
-  constructor( private appointmentsRepository: IAppointmentsRepository){}
+  constructor(
+    @inject('AppointmentsRepository')
+    private appointmentsRepository: IAppointmentsRepository
+    ){}
 
   public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
