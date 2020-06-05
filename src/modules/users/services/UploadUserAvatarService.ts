@@ -1,3 +1,5 @@
+//Amazon S3/ Google Cloud Storage
+
 import path from 'path';
 import fs from 'fs';
 import AppError from '@shared/errors/AppError';
@@ -5,6 +7,7 @@ import uploadConfig from '@config/upload';
 import User from '../infra/typeorm/entities/User';
 import IUserRepository from '../repositories/IUserRepository'
 import { inject, injectable } from 'tsyringe'
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider'
 
 interface IRequest {
   // eslint-disable-next-line camelcase
@@ -17,7 +20,10 @@ class UpdateUserAvatartService {
 
   constructor(
     @inject('UsersRepository')
-    private userRepository: IUserRepository){  }
+    private userRepository: IUserRepository,
+
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider){  }
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
     // Verificar se o usuário é valido
@@ -26,20 +32,16 @@ class UpdateUserAvatartService {
     if (!user) {
       throw new AppError(' Only authenticated users cans change avatar', 401);
     }
+    if(user.avatar){
+      await this.storageProvider.deleteFile(user.avatar)
+    }
+
+    const filename = await this.storageProvider.saveFile(avatarFilename)
     // Se o usuário tiver um avatar
 
-    if (user.avatar) {
-      // Deletar o avatar anterior
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath); // Apresenta o status do objeto se ele existir
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarFilePath);
-      }
-      // userRepository.update;
-    }
-    user.avatar = avatarFilename;
+    user.avatar = filename;
     await this.userRepository.save(user);
+
     return user;
   }
 }

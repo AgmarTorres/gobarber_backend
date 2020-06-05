@@ -5,7 +5,7 @@ import AppointmentRepository from '@modules/appointments/infra/typeorm/repositor
 import IUsersRepository from '@modules/users/repositories/IUserRepository'
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UserRepository'
 import '@modules/users/providers'
-
+import  './providers' // para cadastrar os providers criados
 container.registerSingleton<IAppointmentRepository>('AppointmentRepository', AppointmentRepository)// Nome que eu vou dar para um criar o repositorio de appointments
 container.registerSingleton<IUsersRepository>('UsersRepository', UsersRepository)// Nome que eu vou dar para um criar o repositorio de appointments
 
