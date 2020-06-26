@@ -1,14 +1,20 @@
 import AppError from '@shared/errors/AppError'
 import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider'
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository'
-import UpdateUserAvatarService from './UploadUserAvatarService';
+import UpdateUserAvatarService from './UpdateUserAvatarService';
+
+let fakeUserRepository: FakeUserRepository
+let fakeStorageProvider: FakeStorageProvider
+let updateUserAvatar: UpdateUserAvatarService
 
 describe("Update User Avatar", () =>{
+  beforeEach(()=>{
+    fakeUserRepository = new FakeUserRepository();
+    fakeStorageProvider = new FakeStorageProvider()
+    updateUserAvatar = new UpdateUserAvatarService(fakeUserRepository,fakeStorageProvider)
+  })
 
   it('should to be able update avatar User', async () =>{
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProvider()
-
     const updateUserAvatar = new UpdateUserAvatarService(fakeUserRepository,fakeStorageProvider)
 
     const user = await fakeUserRepository.create({
@@ -25,25 +31,18 @@ describe("Update User Avatar", () =>{
   })
 
   it('should not to be able to update avatar from non existing user ', async () =>{
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProvider()
-
-    const updateUserAvatar = new UpdateUserAvatarService(fakeUserRepository,fakeStorageProvider)
-
-    expect(
+    await expect(
       updateUserAvatar.execute({
         user_id: 'none-exiting-user',
         avatarFilename: 'avatar.jpg'
       })
-     ).rejects.toBeInstanceOf('avatar.jpg')
+     ).rejects.toBeInstanceOf(AppError)
   })
 
 
   it('should be delete old avatar when updating new one', async () =>{
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeStorageProvider = new FakeStorageProvider()
-    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile')
 
+    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile')
     const updateUserAvatar = new UpdateUserAvatarService(fakeUserRepository,fakeStorageProvider)
 
     const user = await fakeUserRepository.create({
@@ -51,6 +50,7 @@ describe("Update User Avatar", () =>{
       email: 'agmartorres@gmail.com',
       password: '123456'
     })
+
     await updateUserAvatar.execute({
       user_id: user.id,
       avatarFilename: 'avatar.jpg'

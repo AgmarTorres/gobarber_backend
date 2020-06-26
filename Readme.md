@@ -34,3 +34,16 @@ Testes garatem que a nossa aplciação continue funcionando independente do núm
 #TDD( Test Driven Development )
 
   - Quando ele se cadastrar na aplicação ele deve receber um e-mail de boas-vindas
+
+
+yarn typeorm migration:create -n CreateUserTokens
+yarn typeorm migration:run
+
+yarn add nodemailer
+yarn add @types/nodemailer
+
+yarn add handlebars
+
+yarn typeorm migration:create -n  AddUserIdToAppointment
+
+yarn typeorm migration:run
